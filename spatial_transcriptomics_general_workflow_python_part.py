@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Spatial Transcriptomics Analysis Workflow Script - Python Part
+Spatial Transcriptomics Analysis Workflow Script - Python part precedes R part
 """
 
 import os
