@@ -18,7 +18,10 @@ image_data_path = '/path/to/image_data'
 # Ensure output directory exists
 os.makedirs(output_dir, exist_ok=True)
 
+# ----------------------
 # FASTQ File Processing
+# ----------------------
+
 # Demultiplexing using umi_tools (example, adjust based on your UMI design)
 subprocess.run([
     'umi_tools', 'extract',
@@ -38,19 +41,24 @@ subprocess.run([
     f'{raw_fastq_dir}/reads_R2.fastq.gz'
 ], check=True)
 
+# ----------------------
 # Image Data Acquisition and Preprocessing
+# ----------------------
+
 # Load and preprocess high-resolution images of the tissue sections
 # This step would typically be done using specialized imaging software
 # For this example, we will use squidpy to load and process the image
 img = sq.im.ImageContainer(image_data_path, library_id='sample_id')
 sq.im.process(img, layer='image_name')
 
-# Tissue and Spot Detection
 # Segment tissue regions and detect spots using Squidpy
 sq.im.segment(img, layer='image_name', method='otsu')
 sq.im.spots.detect(img, method='grid')
 
+# ----------------------
 # mRNA Genome Alignment
+# ----------------------
+
 # Align mRNA sequences to the reference genome using STAR
 subprocess.run([
     'STAR',
@@ -62,7 +70,10 @@ subprocess.run([
     '--outSAMtype', 'BAM', 'SortedByCoordinate'
 ], check=True)
 
+# ----------------------
 # Gene Region Annotation
+# ----------------------
+
 # Annotate gene regions using featureCounts
 subprocess.run([
     'featureCounts',
@@ -71,7 +82,10 @@ subprocess.run([
     f'{output_dir}/Aligned.sortedByCoord.out.bam'
 ], check=True)
 
+# ----------------------
 # MID Correction
+# ----------------------
+
 # Correct molecule identity errors using UMI-tools dedup
 subprocess.run([
     'umi_tools', 'dedup',
@@ -79,7 +93,10 @@ subprocess.run([
     '--output', f'{output_dir}/deduplicated.bam'
 ], check=True)
 
+# ----------------------
 # Expression Matrix Generation
+# ----------------------
+
 # Compile processed and annotated reads into a gene expression matrix using Scanpy
 adata = sc.read_10x_mtx(
     f'{output_dir}/filtered_feature_bc_matrix/',  # Directory containing the matrix.mtx, genes.tsv, and barcodes.tsv files
