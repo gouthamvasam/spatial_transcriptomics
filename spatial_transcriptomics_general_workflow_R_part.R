@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# Spatial Transcriptomics Analysis Workflow Script - R part
+# Spatial Transcriptomics Analysis Workflow Script - R part follows python part
 
 # Load required libraries
 library(Seurat)
